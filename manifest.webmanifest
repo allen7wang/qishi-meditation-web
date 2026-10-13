@@ -1,0 +1,26 @@
+{
+  "name": "栖时 · 自然音冥想",
+  "short_name": "栖时",
+  "description": "自由混合自然声音与吟诵，保存你的随身宁静。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f3ed",
+  "theme_color": "#315e4a",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "./",
+  "scope": "./",
+  "lang": "zh-CN"
+}
