@@ -1,6 +1,6 @@
 const BASE_PATH = new URL('./', self.location.href).pathname
 const CACHE_SUFFIX = BASE_PATH === '/' ? '' : ':' + BASE_PATH
-const CACHE_NAME = 'qishi-v0.6.0-pages-1' + CACHE_SUFFIX
+const CACHE_NAME = 'qishi-v0.6.1' + CACHE_SUFFIX
 const AUDIO_CACHE = 'qishi-audio-v1' + CACHE_SUFFIX
 function appPath(path) { return BASE_PATH + path.replace(/^\/+/, '') }
 const AUDIO_FILES = [
