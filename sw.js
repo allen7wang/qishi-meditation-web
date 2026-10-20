@@ -1,6 +1,6 @@
 const BASE_PATH = new URL('./', self.location.href).pathname
 const CACHE_SUFFIX = BASE_PATH === '/' ? '' : ':' + BASE_PATH
-const CACHE_NAME = 'qishi-v0.6.1' + CACHE_SUFFIX
+const CACHE_NAME = 'qishi-v0.8.0' + CACHE_SUFFIX
 const AUDIO_CACHE = 'qishi-audio-v1' + CACHE_SUFFIX
 function appPath(path) { return BASE_PATH + path.replace(/^\/+/, '') }
 const AUDIO_FILES = [
@@ -9,7 +9,13 @@ const AUDIO_FILES = [
   '/audio/lake-waves.mp3', '/audio/stream.mp3', '/audio/pine-wind.mp3', '/audio/howling-wind.mp3',
   '/audio/cricket.mp3', '/audio/cicada.mp3', '/audio/campfire.mp3', '/audio/fireplace.mp3',
   '/audio/alpha-beat.mp3', '/audio/theta-beat.mp3', '/audio/delta-beat.mp3',
+  '/audio/beta-beat.mp3', '/audio/gamma-beat.mp3',
   '/audio/white-noise.mp3', '/audio/pink-noise.mp3', '/audio/brown-noise.mp3',
+  '/audio/blue-noise.mp3', '/audio/violet-noise.mp3', '/audio/velvet-noise.mp3', '/audio/gray-noise.mp3',
+  '/audio/singing-bowl-rim.mp3', '/audio/singing-bowl-strike.mp3', '/audio/temple-bell.mp3',
+  '/audio/cave-throat-singing.mp3', '/audio/deep-cave.mp3',
+  '/audio/warm-drone.mp3', '/audio/deep-drone.mp3', '/audio/sub-hum.mp3',
+  '/audio/fan-hum.mp3', '/audio/slow-heartbeat.mp3',
   '/audio/rain-leaves-garden.mp3', '/audio/rain-under-leaves.mp3',
   '/audio/rain-leaves-close.mp3', '/audio/rain-forest-birds.mp3',
   '/audio/rain-grass-close.mp3', '/audio/rain-sycamore-canopy.mp3',

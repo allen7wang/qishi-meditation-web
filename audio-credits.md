@@ -139,18 +139,29 @@
 
 ## 栖时原创合成音
 
-下列 6 段音频由项目中的 `scripts/generate_sounds.py` 调用 FFmpeg 生成，不使用外部录音。每段为 60 秒、44.1 kHz 的立体声 MP3。
+下列 17 段音频由项目中的 `scripts/generate_sounds.py` 调用 FFmpeg 生成，不使用外部录音。每段为 60 秒、44.1 kHz 的立体声 MP3。
 
 | 栖时名称 | 生成参数 |
 | --- | --- |
 | α 节拍 | 左耳 220 Hz，右耳 230 Hz；频差 10 Hz |
 | θ 节拍 | 左耳 220 Hz，右耳 226 Hz；频差 6 Hz |
 | δ 节拍 | 左耳 220 Hz，右耳 222 Hz；频差 2 Hz |
+| β 节拍 | 左耳 220 Hz，右耳 234 Hz；频差 14 Hz |
+| γ 节拍 | 左耳 220 Hz，右耳 260 Hz；频差 40 Hz |
 | 白噪声 | FFmpeg `anoisesrc`，white，两个独立声道 |
 | 粉红噪声 | FFmpeg `anoisesrc`，pink，两个独立声道 |
 | 棕色噪声 | FFmpeg `anoisesrc`，brown，两个独立声道 |
+| 蓝噪声 | FFmpeg `anoisesrc`，blue，两个独立声道 |
+| 紫噪声 | FFmpeg `anoisesrc`，violet，两个独立声道 |
+| 丝绒噪声 | FFmpeg `anoisesrc`，velvet，两个独立声道 |
+| 灰噪声 | 白噪声经等响曲线近似均衡（150 Hz +2.5 dB、2.5 kHz −5 dB、9 kHz +2.5 dB），两个独立声道 |
+| 暖音持续垫 | FFmpeg `aevalsrc`，110 / 164.81 / 220 / 329.63 Hz 正弦泛音堆叠，各泛音带独立慢速 LFO 漂移，双声道相位差，低通 2.6 kHz |
+| 深音持续垫 | FFmpeg `aevalsrc`，55 / 82.41 / 110 / 164.81 Hz 正弦泛音堆叠，各泛音带独立慢速 LFO 漂移，双声道相位差，低通 900 Hz |
+| 低频嗡鸣 | FFmpeg `aevalsrc` 60 Hz 基频与 120 / 180 Hz 谐波，叠加低通 170 Hz 棕色噪声床，两个独立声道 |
+| 风扇低鸣 | FFmpeg `aevalsrc` 92 Hz 基频与 184 Hz 谐波电机嗡声，叠加带通 210 Hz – 6.5 kHz 白噪声气流，两个独立声道 |
+| 缓慢心跳 | FFmpeg `aevalsrc`，每分钟 50 次，每周期两下 52 / 44 Hz 低频正弦脉冲加指数衰减，低通 140 Hz |
 
-α、θ、δ 是**频差所属的常见脑电频段名称**，不是录音中存在 10 / 6 / 2 Hz 的可听纯音，也不代表聆听者的脑电会同步。双耳节拍需要左右声道分离的耳机；通过扬声器播放时体验会不同。[NCBI 对 α 频段的描述](https://www.ncbi.nlm.nih.gov/books/NBK539805/)约为 8–12 Hz；[双耳节拍与脑波同步的系统综述](https://pubmed.ncbi.nlm.nih.gov/37205669/)指出现有研究结果并不一致。产品不将这些声音描述为治疗或保证提升专注、改善睡眠的手段。
+α、θ、δ、β、γ 是**频差所属的常见脑电频段名称**，不是录音中存在 10 / 6 / 2 / 14 / 40 Hz 的可听纯音，也不代表聆听者的脑电会同步。灰噪声的均衡只是对等响曲线的近似，不代表精确的心理声学标定。双耳节拍需要左右声道分离的耳机；通过扬声器播放时体验会不同。[NCBI 对 α 频段的描述](https://www.ncbi.nlm.nih.gov/books/NBK539805/)约为 8–12 Hz；[双耳节拍与脑波同步的系统综述](https://pubmed.ncbi.nlm.nih.gov/37205669/)指出现有研究结果并不一致。产品不将这些声音描述为治疗或保证提升专注、改善睡眠的手段。v0.7.0 新增 6 段合成音（β / γ 节拍、蓝 / 紫 / 丝绒 / 灰噪声）的生成参数、时长与本地 SHA256 记录见 [`scripts/audio_sources_v0_7.json`](./audio-sources-v0-7.json)；v0.8.0 新增 5 段合成音（暖 / 深持续垫、低频嗡鸣、风扇低鸣、缓慢心跳）见 [`scripts/audio_sources_v0_8.json`](./audio-sources-v0-8.json)。氛围音垫与心跳为声音设计，频率与节奏参数不宣称确定的生理效果。
 
 ## v0.4.0 新增梵音
 
@@ -190,3 +201,19 @@ Wikimedia Commons 素材使用原始 Ogg 文件，Freesound 素材使用公开�
 | 雹雨远雷 / `public/audio/hail-thunder.mp3` | [hail storm & thunder field recording with tascam dr-70d & Rode NTG4+](https://freesound.org/people/Garuda1982/sounds/425041/)，Garuda1982 | 德国 Leipzig 的冰雹、雨和雷声实录，使用 Tascam DR-70D 与 Rode NTG4+；非纯冰雹声，保持单声道。保留完整预览时长。本地约 64 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
 「秋叶密雨」署名 theplax，作品 [Rain on Leaves.wav](https://freesound.org/people/theplax/sounds/680402/)，其本地文件为经响度调整、转码、短淡入淡出和移除元数据的改编版本，按 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 提供。其余 11 段按各自作品页面的 CC0 1.0 提供。鸟种及动物标注依照作者说明，未独立鉴定；群鸟、溪雨、雹雨保留混合环境声。
+
+## v0.8.0 新增钵音钟声与氛围实录
+
+以下 5 段使用 Freesound 作品页面公开的高品质 MP3 预览，核对日期为 2026-10-20，全部为 CC0 1.0。仅使用表内录音，未下载需登录的原始文件。
+
+处理：两遍 loudnorm（尽量线性增益以保留敲击动态），统一响度至目标 -23 LUFS、真峰值目标 -3 dBTP；转码为 128 kbps、44.1 kHz MP3，保留原声道数与速度，移除容器元数据；「颂钵磨音」节选开头 120 秒并加约 3 秒片尾淡化，其余保留完整预览时长，片头约 0.12 秒、片尾约 0.15 秒淡化（长延音素材除外），不保证无缝循环。来源 URL、授权、时长和本地 SHA256 记录见 [`scripts/audio_sources_v0_8.json`](./scripts/audio_sources_v0_8.json)。
+
+| 栖时名称 / 本地文件 | 原始录音与作者 | 内容与处理 | 授权 |
+| --- | --- | --- | --- |
+| 颂钵磨音 / `public/audio/singing-bowl-rim.mp3` | [Singing Bowl, long without reverb](https://freesound.org/people/hollandm/sounds/573805/)，hollandm | 英国 Doncaster 沿钵缘持续摩擦演奏约 2 分钟的颂钵，作者已剪除刺耳摩擦声并使用 AKG P220 录制、做过 EQ 与压缩；节选开头 120 秒，片尾约 3 秒淡化。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| 颂钵单击 / `public/audio/singing-bowl-strike.mp3` | [TIBETAN BOWL - 1](https://freesound.org/people/SamuelGremaud/sounds/518705/)，SamuelGremaud | 传统藏式颂钵软槌敲击与延音，ZOOM H4N Pro 录制。保留完整预览时长，本地约 60 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| 古寺铜钟 / `public/audio/temple-bell.mp3` | [Temple Bell, Valley of the Temples](https://freesound.org/people/Mista%20Bumpy/sounds/232333/)，Mista Bumpy | 美国夏威夷 Kaneohe 平等院（Byodo-in）独立钟楼中的青铜钟，钟体在日本铸造。保留完整预览时长，本地约 90 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| 洞穴喉音 / `public/audio/cave-throat-singing.mp3` | [Throat Singing in a Cave](https://freesound.org/people/ItsThatRoboGuy/sounds/816640/)，ItsThatRoboGuy | 匈牙利 Noszvaj 洞穴内实录的喉音咏唱，含洞穴混响；为作者大学短片项目录制。保留完整预览时长，本地约 36 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| 洞穴深处 / `public/audio/deep-cave.mp3` | [ambience cave7.ogg](https://freesound.org/people/fonografico/sounds/636125/)，fonografico | 作者洞穴氛围系列之一；原页面描述简略，未说明是否为特定洞穴实录，按氛围声床使用。保留完整预览时长，本地约 69 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+
+五段均为经响度调整、转码、淡入淡出和移除元数据的改编版本，保留来源与作者署名，按各自作品页面的 CC0 1.0 提供。
