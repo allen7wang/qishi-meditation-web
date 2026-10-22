@@ -2,16 +2,18 @@
 
 在线体验：[打开栖时](https://allen7wang.github.io/qishi-meditation-web/)
 
-当前版本：v0.9.0。包含 133 种声音、17 个分类和 73 个场景组合，支持电脑、手机浏览器及安装到主屏幕。
+当前 Web / PWA 预发布版本：**v0.10.0**。包含 133 种声音、17 个分类和 73 个场景组合，支持电脑、手机浏览器及安装到主屏幕。
 
-此仓库存放可直接发布的网页、音频和授权说明；源码另行维护。网页为本地浏览器应用，收藏和混音设置保存在当前浏览器。
+本版改善循环衔接与播放起停：110 段适用声音加入首尾交叠，其余 23 段节拍、吟诵、钟铃及固定音调声音保留原始循环。原始 MP3 和声音授权不变。收藏保存在当前浏览器，声音按需缓存。
 
-声音来源、作者、许可和改编说明见 [完整声音授权清单](./audio-credits.md)，本版来源记录见 [audio-sources.json](./audio-sources.json)。
+此仓库存放生产网页、音频和授权说明；源码另行维护。GitHub Pages 从 main 分支根目录发布，.nojekyll 保留静态文件。
 
-GitHub Pages 从 main 分支根目录发布，`.nojekyll` 保留静态文件。
+## 版本下载
 
-## 版本发布
+- [v0.10.0 Release](https://github.com/allen7wang/qishi-meditation-web/releases/tag/v0.10.0)
+- [网页运行包](https://github.com/allen7wang/qishi-meditation-web/archive/refs/tags/v0.10.0.zip)
+- [本地运行与校验](./INSTALL.md)
+- [更新说明](./RELEASE_NOTES.md)
+- [完整声音授权清单](./audio-credits.md)
 
-[v0.6.1 Release Notes 与 Web 运行包](https://github.com/allen7wang/qishi-meditation-web/releases/tag/v0.6.1)
-
-预览版已通过 17 项测试及根路径、Pages 两种构建；声音库仍为 117 种、15 类、44 个场景。手机布局、混音和按需声音缓存已验证，尚未验证真机安装或锁屏后台播放。
+本版通过 31 项 Web 测试与两种生产构建，并完成真实浏览器音频渲染、桌面/手机视口交互及本地断网重开播放检查。具体范围与真机边界见更新说明。
