@@ -1,0 +1,248 @@
+name: Package reviewed QISHI Web release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag and prerelease draft
+        required: true
+        type: string
+        default: v1.6.0
+      expected_sounds:
+        description: Reviewed total sounds
+        required: true
+        type: number
+        default: 151
+      expected_categories:
+        description: Reviewed category count (declared)
+        required: true
+        type: number
+        default: 19
+      expected_scenes:
+        description: Reviewed scene count (declared)
+        required: true
+        type: number
+        default: 97
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qishi-web-package-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAG: ${{ inputs.tag }}
+      EXPECTED_SOUNDS: ${{ inputs.expected_sounds }}
+      EXPECTED_CATEGORIES: ${{ inputs.expected_categories }}
+      EXPECTED_SCENES: ${{ inputs.expected_scenes }}
+    steps:
+      - name: Require an existing immutable tag and unpublished prerelease draft
+        id: target
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          tag = os.environ['TAG']
+          if repo != 'allen7wang/qishi-meditation-web' or not re.fullmatch(r'v\d+\.\d+\.\d+', tag):
+              raise SystemExit('Only the reviewed public repository and version tags are supported')
+          for key in ('EXPECTED_SOUNDS', 'EXPECTED_CATEGORIES', 'EXPECTED_SCENES'):
+              if not os.environ[key].isdigit() or not 0 < int(os.environ[key]) <= 1000:
+                  raise SystemExit('Invalid declared catalog count: ' + key)
+
+
+          def api(endpoint):
+              return json.loads(subprocess.check_output(['gh', 'api', endpoint], text=True))
+
+
+          ref = api('repos/' + repo + '/git/ref/tags/' + tag)['object']
+          for _ in range(8):
+              if ref['type'] == 'commit':
+                  break
+              if ref['type'] != 'tag':
+                  raise SystemExit('Tag is not a commit/annotated tag')
+              ref = api('repos/' + repo + '/git/tags/' + ref['sha'])['object']
+          else:
+              raise SystemExit('Nested tag limit exceeded')
+          if not re.fullmatch(r'[0-9a-f]{40}', ref['sha']):
+              raise SystemExit('Invalid tag commit')
+          found = []
+          for page in range(1, 101):
+              rows = api('repos/' + repo + '/releases?per_page=100&page=' + str(page))
+              found.extend(x for x in rows if x['tag_name'] == tag)
+              if len(rows) < 100:
+                  break
+          else:
+              raise SystemExit('Release pagination limit exceeded')
+          if len(found) != 1 or not found[0]['draft'] or not found[0]['prerelease']:
+              raise SystemExit('An existing, unique prerelease draft is required; this workflow never creates or publishes releases')
+          release = found[0]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('release_id=' + str(int(release['id'])) + '\n')
+              output.write('tag_commit=' + ref['sha'] + '\n')
+          print(json.dumps({'draftVerified': True, 'tag': tag, 'commit': ref['sha'], 'releaseId': release['id']}))
+          PY
+
+      - name: Check out the reviewed public runtime tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify runtime, create deterministic ZIP and stage four attachments
+        env:
+          TAG_COMMIT: ${{ steps.target.outputs.tag_commit }}
+          RELEASE_ID: ${{ steps.target.outputs.release_id }}
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import hashlib
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+          import re
+          import subprocess
+          import zipfile
+
+          repo, tag = os.environ['GITHUB_REPOSITORY'], os.environ['TAG']
+          commit, release_id = os.environ['TAG_COMMIT'], int(os.environ['RELEASE_ID'])
+          version = tag[1:]
+          root = Path(os.environ['GITHUB_WORKSPACE']).resolve()
+          out = Path(os.environ['RUNNER_TEMP']) / ('qishi-web-' + tag)
+          out.mkdir(parents=True, exist_ok=True)
+          sha = lambda data: hashlib.sha256(data).hexdigest()
+          source_files = subprocess.check_output(['git', 'ls-files', '-z'], text=True).split('\0')
+          source_files = [x for x in source_files if x]
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          assert head == commit, 'Checkout differs from the reviewed tag target'
+          shell = {'.nojekyll', 'index.html', 'sw.js', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'audio-credits.md', 'audio-sources.json', 'audio-sources-v0-7.json', 'audio-sources-v0-8.json', 'audio-sources-v1-5.json', 'audio-sources-v1-6.json'}
+          docs = {'README.md', 'INSTALL.md', 'RELEASE_NOTES.md', 'SHA256SUMS'}
+          audio_re = re.compile(r'audio/[a-z0-9-]+\.mp3')
+          asset_re = re.compile(r'assets/index-[A-Za-z0-9_-]+\.(?:js|css)')
+          workflow = '.github/workflows/package-web-release.yml'
+          secret = re.compile(r'(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|AKIA[0-9A-Z]{16})')
+          files = {}
+          for name in sorted(source_files):
+              assert not PurePosixPath(name).is_absolute() and all(x not in ('', '.', '..') for x in name.split('/')), 'Unsafe tracked path'
+              if name == workflow:
+                  continue
+              assert name in shell or name in docs or audio_re.fullmatch(name) or asset_re.fullmatch(name), 'Unexpected tracked/source file: ' + name
+              path = root / name
+              assert path.is_file() and not path.is_symlink(), 'Missing file or symlink: ' + name
+              data = path.read_bytes()
+              if not audio_re.fullmatch(name) and not name.endswith('.png'):
+                  assert not secret.search(data.decode('utf-8')), 'Credential-looking content: ' + name
+              files[name] = data
+          assert shell | docs <= set(files), 'Missing runtime/documentation files'
+          audio = {p: b for p, b in files.items() if audio_re.fullmatch(p)}
+          assert len(audio) == int(os.environ['EXPECTED_SOUNDS']) == 151, 'Actual audio count differs'
+          assert int(os.environ['EXPECTED_CATEGORIES']) == 19 and int(os.environ['EXPECTED_SCENES']) == 97, 'This reviewed package expects 19 categories / 97 scenes'
+          runtime = {p: b for p, b in files.items() if p not in docs}
+          checksums = {}
+          for line in files['SHA256SUMS'].decode().splitlines():
+              match = re.fullmatch(r'([0-9a-f]{64})  ([A-Za-z0-9_./-]+)', line)
+              assert match and match[2] not in checksums, 'Malformed/duplicate runtime checksum'
+              checksums[match[2]] = match[1]
+          assert set(checksums) == set(runtime), 'Checksum inventory is incomplete or includes non-runtime paths'
+          for name, data in runtime.items():
+              assert sha(data) == checksums[name], 'Runtime SHA256 mismatch: ' + name
+          new_sources, source_checks = {}, []
+          credits = files['audio-credits.md'].decode()
+          for name, count in [('audio-sources-v1-5.json', 10), ('audio-sources-v1-6.json', 8)]:
+              rows = json.loads(files[name])
+              assert isinstance(rows, list) and len(rows) == count, 'New source manifest count differs'
+              for row in rows:
+                  sound_id = row['id']
+                  assert re.fullmatch('[a-z0-9-]+', sound_id) and row['file'] == '/audio/' + sound_id + '.mp3'
+                  path = row['file'][1:]
+                  assert path not in new_sources and path in audio, 'Overlapping or missing new source'
+                  assert re.fullmatch('[0-9a-f]{64}', row['sourceSha256']) and sha(audio[path]) == row['sha256'], 'New audio/source hash mismatch'
+                  assert all(row.get(k) for k in ('author', 'source', 'license', 'licenseUrl', 'notes')), 'Missing new attribution'
+                  assert any('`public/' + path + '`' in line and all(row[k] in line for k in ('author', 'source', 'licenseUrl')) for line in credits.splitlines()), 'Missing credit row'
+                  new_sources[path] = row
+              source_checks.append({'name': name, 'records': len(rows), 'sha256': sha(files[name])})
+          assert len(new_sources) == 18
+          worker = files['sw.js'].decode()
+          assert ('qishi-' + tag) in worker, 'Worker version differs'
+          assert set(re.findall(r'/audio/[a-z0-9-]+\.mp3', worker)) == {'/' + p for p in audio}, 'Worker audio allowlist differs'
+          assert all(name in worker for name in shell if name.startswith('audio-sources')), 'Offline source metadata missing'
+          assert '](./scripts/' not in credits, 'Broken attribution link'
+          html = files['index.html'].decode()
+          for path in re.findall(r'<script[^>]+src=[\"\']([^\"\']+)', html) + re.findall(r'<link[^>]+href=[\"\']([^\"\']+\.css)', html):
+              assert path.startswith('/qishi-meditation-web/assets/') and path.removeprefix('/qishi-meditation-web/') in files, 'Incorrect Pages build base/reference'
+          # Deterministic zip metadata makes a safe draft rerun produce the same bytes.
+          epoch = int(subprocess.check_output(['git', 'show', '-s', '--format=%ct', 'HEAD'], text=True))
+          stamp = datetime.datetime.fromtimestamp(epoch, datetime.timezone.utc)
+          assert 1980 <= stamp.year <= 2107
+          archive = out / ('qishi-web-' + tag + '.zip')
+          with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as zipped:
+              entries = {'qishi-meditation-web/' + name: data for name, data in files.items()}
+              entries.update({name: files[name] for name in ('README.md', 'INSTALL.md')})
+              for name, data in sorted(entries.items()):
+                  info = zipfile.ZipInfo(name, (stamp.year, stamp.month, stamp.day, stamp.hour, stamp.minute, stamp.second))
+                  info.create_system = 3
+                  info.external_attr = 0o100644 << 16
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  zipped.writestr(info, data)
+          with zipfile.ZipFile(archive) as zipped:
+              assert zipped.testzip() is None, 'ZIP CRC check failed'
+              assert len([x for x in zipped.namelist() if x.startswith('qishi-meditation-web/audio/')]) == 151
+          report = {'pass': True, 'version': version, 'tag': tag, 'commit': commit, 'publicCommit': commit,
+                    'producer': 'GitHub Actions public runtime packaging', 'audioCount': len(audio),
+                    'declaredCategories': int(os.environ['EXPECTED_CATEGORIES']), 'declaredScenes': int(os.environ['EXPECTED_SCENES']),
+                    'catalogCountScope': 'Audio count is enumerated. Category/scene counts are supplied by the reviewed workflow inputs; this job does not infer them from minified JS.',
+                    'runtimeFiles': len(runtime), 'runtimeChecksumSha256': sha(files['SHA256SUMS']), 'newSourceManifests': source_checks,
+                    'newAudioHashMatches': len(new_sources), 'zipCrcPassed': True,
+                    'archive': {'name': archive.name, 'bytes': archive.stat().st_size, 'sha256': sha(archive.read_bytes())},
+                    'scope': 'Packaging and runtime/source hash checks only; no live browser, physical-device or subjective-audio claim.'}
+          (out / 'verification.json').write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
+          (out / 'audio-credits.md').write_bytes(files['audio-credits.md'])
+          names = [archive.name, 'verification.json', 'audio-credits.md']
+          (out / 'SHA256SUMS-web').write_text(''.join(sha((out / name).read_bytes()) + '  ' + name + '\n' for name in names))
+          names.append('SHA256SUMS-web')
+          producer = {'tag': tag, 'commit': commit, 'assets': [{'name': name, 'bytes': (out / name).stat().st_size, 'sha256': sha((out / name).read_bytes())} for name in names]}
+          print('QISHI_WEB_ASSET_MANIFEST_JSON=' + json.dumps(producer, sort_keys=True, separators=(',', ':')), flush=True)
+
+
+          def api(endpoint):
+              return json.loads(subprocess.check_output(['gh', 'api', endpoint], text=True))
+
+
+          def current():
+              release = api('repos/' + repo + '/releases/' + str(release_id))
+              assert release['id'] == release_id and release['tag_name'] == tag and release['draft'] and release['prerelease'], 'Existing draft changed; stop'
+              ref = api('repos/' + repo + '/git/ref/tags/' + tag)['object']
+              for _ in range(8):
+                  if ref['type'] == 'commit':
+                      break
+                  ref = api('repos/' + repo + '/git/tags/' + ref['sha'])['object']
+              assert ref['type'] == 'commit' and ref['sha'] == commit, 'Tag moved during packaging'
+              return release
+
+
+          for expected in producer['assets']:
+              release = current()
+              assets = {x['name']: x for x in release['assets']}
+              name = expected['name']
+              if name not in assets:
+                  subprocess.run(['gh', 'release', 'upload', tag, '--repo', repo, str(out / name)], check=True)
+                  release = current()
+                  assets = {x['name']: x for x in release['assets']}
+              item = assets[name]
+              assert item['state'] == 'uploaded' and item['size'] == expected['bytes'] and item.get('digest') == 'sha256:' + expected['sha256'], 'Attachment differs; never clobber: ' + name
+          release = current()
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('# QISHI Web package staged\n\nThe existing prerelease draft remains unpublished.\n\n')
+              summary.write('```json\n' + json.dumps(producer, indent=2) + '\n```\n')
+          print(json.dumps({'pass': True, 'draft': True, 'release': release['html_url'], 'assetsVerified': len(names), 'audio': len(audio)}))
+          PY
