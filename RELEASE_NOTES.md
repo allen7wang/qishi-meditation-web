@@ -1,3 +1,17 @@
+# 栖时 QISHI Web v1.6.0 · 手作、足迹与陪伴
+
+2026-10-25，Web / PWA 预发布：151 段声音、19 类、97 个场景。
+
+新增铅笔书写、钩针轻响、软刷拂纸、杯中注水、猫咪呼噜、小犬轻鼾、砂径脚步与踏叶慢行，并配套 12 个新场景和宠物陪伴分类。相对上一公开 v0.10.0，包含此前本地迭代的独立试听、混音撤销 / 重做、定时渐弱、离线声音管理、收藏备份和可暂停呼吸练习。新 8 段均保留事件节律，短素材编排与瞬态处理如实记录。
+
+[在线体验](https://allen7wang.github.io/qishi-meditation-web/) · [声音授权](https://allen7wang.github.io/qishi-meditation-web/audio-credits.md) · [Android / iOS 安装包](https://github.com/allen7wang/qishi-meditation/releases/tag/v1.6.0)（需私有仓库访问权限）
+
+184 项 Web Node、112 组 Chrome 检查、根路径 / Pages 构建通过；151 段音频与来源记录哈希一致，旧 133 段公开录音保留。新增声音与场景完成实际播放、断网重开与授权来源文件首次离线读取。ZIP、SHA256SUMS-web 与 verification.json 由此版本公开 runtime 标签生成并校验，内容和源码分开分发。
+
+PWA 离线前需手动保存所选声音并等待完成。Android 为侧载 APK；iOS 为需签名 IPA，不表示商店上架。未进行本版本真机、锁屏或整段主观听检，未宣称医疗效果或所有素材主观无缝。
+
+---
+
 # 栖时 QISHI v0.10.0 · Web 播放衔接预发布版
 
 发布日期：2026-10-22。本次为 Web / PWA 预发布版本，移动端仍为 v0.9.0-mobile。

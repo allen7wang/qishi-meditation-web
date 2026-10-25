@@ -1,33 +1,23 @@
-# 栖时 QISHI v0.10.0 · Web 运行说明
+# QISHI v1.6.0 runtime and downloads
 
-在线使用：https://allen7wang.github.io/qishi-meditation-web/
+[Online experience](https://allen7wang.github.io/qishi-meditation-web/) | [Web runtime archive](https://github.com/allen7wang/qishi-meditation-web/archive/refs/tags/v1.6.0.zip) | [Mobile downloads](https://github.com/allen7wang/qishi-meditation/releases/tag/v1.6.0)
 
-版本运行包：https://github.com/allen7wang/qishi-meditation-web/archive/refs/tags/v0.10.0.zip
+## Web
 
-该归档包含可静态托管的生产网页、133 段 MP3 和声音授权说明。版本为 Web / PWA 预发布，声音库共 17 类、73 个场景。原生移动应用继续使用 v0.9.0-mobile。
-
-## 本地运行
-
-1. 下载并解压运行包。
-2. 将包含 index.html、assets/、audio/ 的文件夹重命名为 qishi-meditation-web。
-3. 在该文件夹的上一级目录运行：
+Extract the archive and rename the folder containing index.html, assets/ and audio/ to qishi-meditation-web. In its parent directory run:
 
 ```bash
 python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-4. 打开 http://127.0.0.1:8080/qishi-meditation-web/ ，点击后开始播放。
+Open http://127.0.0.1:8080/qishi-meditation-web/ . This build requires the /qishi-meditation-web/ base path; opening index.html as a file is unsupported. HTTPS or localhost is needed for the PWA/offline service worker. Save sounds and wait for completion before going offline.
 
-网页为 /qishi-meditation-web/ 子路径构建，托管时保留该路径。需要根路径版本时，在源码仓库运行 npm ci 和 npm run build。直接双击 index.html 不支持浏览器音频加载与离线缓存。
+Place the SHA256SUMS release attachment in the runtime directory and run `shasum -a 256 -c SHA256SUMS` (Linux: `sha256sum -c SHA256SUMS`). The list covers runtime files; it excludes these documentation files and the checksum list itself.
 
-## 校验与离线
+## Android and iOS
 
-将发布附件 SHA256SUMS 放入 index.html 所在目录，在该目录运行 `shasum -a 256 -c SHA256SUMS`（Linux 可使用 `sha256sum -c SHA256SUMS`）。清单核对全部运行文件，不包含 README、更新说明、安装说明和校验清单本身。
+Mobile assets are on the private source repository release page and require access. Android APK is signed for sideloading with the existing Expo debug certificate, not a store distribution key. iOS IPA is unsigned and cannot install directly; use Xcode with your own Apple developer signing or another supported signing path. Do not remove an existing app merely to update: removal can delete its local favorites. Refer to the mobile release installation notes for exact version/build and tested scope.
 
-安装与离线缓存需要 HTTPS，localhost / 127.0.0.1 为开发例外。先播放声音或使用“离线保存当前组合”，等待完成后再断网。收藏仅存当前浏览器，声音缓存由浏览器管理。
+## Attribution and limits
 
-## 声音与使用边界
-
-本版对 110 段声音的播放缓冲进行首尾交叠，另 23 段保持原始循环；原 MP3、作者和许可未变。完整署名见 audio-credits.md，三批新增素材来源见 audio-sources*.json。应遵守每段素材各自的许可，不能将整套素材统一视为原创。
-
-本轮已完成自动测试、浏览器音频渲染和本地离线检查；主观听感和真机长时间后台播放需另行验证。双耳节拍等声音设计不代表确定的生理效果。
+See audio-credits.md and audio-sources*.json for each recording, author, license, and transformations. The collection is not uniformly original or licensed under a single license. Scene combinations are creative mixes and do not imply simultaneous recording in one location. Technical checks do not establish subjective comfort, medical benefits, physical-device acceptance, or lock-screen reliability.

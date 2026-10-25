@@ -206,7 +206,7 @@ Wikimedia Commons 素材使用原始 Ogg 文件，Freesound 素材使用公开�
 
 以下 5 段使用 Freesound 作品页面公开的高品质 MP3 预览，核对日期为 2026-10-20，全部为 CC0 1.0。仅使用表内录音，未下载需登录的原始文件。
 
-处理：两遍 loudnorm（尽量线性增益以保留敲击动态），统一响度至目标 -23 LUFS、真峰值目标 -3 dBTP；转码为 128 kbps、44.1 kHz MP3，保留原声道数与速度，移除容器元数据；「颂钵磨音」节选开头 120 秒并加约 3 秒片尾淡化，其余保留完整预览时长，片头约 0.12 秒、片尾约 0.15 秒淡化（长延音素材除外），不保证无缝循环。来源 URL、授权、时长和本地 SHA256 记录见 [`scripts/audio_sources_v0_8.json`](./scripts/audio_sources_v0_8.json)。
+处理：两遍 loudnorm（尽量线性增益以保留敲击动态），统一响度至目标 -23 LUFS、真峰值目标 -3 dBTP；转码为 128 kbps、44.1 kHz MP3，保留原声道数与速度，移除容器元数据；「颂钵磨音」节选开头 120 秒并加约 3 秒片尾淡化，其余保留完整预览时长，片头约 0.12 秒、片尾约 0.15 秒淡化（长延音素材除外），不保证无缝循环。来源 URL、授权、时长和本地 SHA256 记录见 [`scripts/audio_sources_v0_8.json`](./audio-sources-v0-8.json)。
 
 | 栖时名称 / 本地文件 | 原始录音与作者 | 内容与处理 | 授权 |
 | --- | --- | --- | --- |
@@ -217,3 +217,43 @@ Wikimedia Commons 素材使用原始 Ogg 文件，Freesound 素材使用公开�
 | 洞穴深处 / `public/audio/deep-cave.mp3` | [ambience cave7.ogg](https://freesound.org/people/fonografico/sounds/636125/)，fonografico | 作者洞穴氛围系列之一；原页面描述简略，未说明是否为特定洞穴实录，按氛围声床使用。保留完整预览时长，本地约 69 秒。 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
 五段均为经响度调整、转码、淡入淡出和移除元数据的改编版本，保留来源与作者署名，按各自作品页面的 CC0 1.0 提供。
+
+
+## v1.5.0 · 生活空间与野外细部
+
+本轮新增 10 段来源录音，转为 44.1 kHz / 128 kbps MP3 并进行响度整理及极短首尾淡化；既有 133 段不改动。书页是间隔编排，不是连续一分钟的读书现场。场景是不同录音的创意混音，不代表同一地点同时录得。
+
+| 栖时名称 | 文件 | 原始录音与作者 | 授权 | 改动与说明 |
+| --- | --- | --- | --- | --- |
+| 列车车厢 | `public/audio/quiet-train.mp3` | [列车车厢](https://freesound.org/people/marion3825/sounds/510822/)，marion3825 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；转码、35Hz高通、响度调整及头尾10ms淡入出，保留原声道，无大首尾交叠。 |
+| 书页轻翻 | `public/audio/book-pages.mp3` | [书页轻翻](https://freesound.org/people/Kodack/sounds/256475/)，Kodack | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 录音编排：公开HQ预览9.363792秒全片分别置于1/21/41秒，余处留静；全长60秒。每片首尾10ms淡入出，35Hz高通和两遍响度调整。无额外音乐/人声/合成声，非连续现场。 |
+| 轻键落字 | `public/audio/soft-keyboard.mp3` | [Keyboard Typing 1 (HHKB, Topre)](https://freesound.org/people/grcekh/sounds/546032/)，grcekh | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；35Hz高通、两遍响度调整、保原声道转码与首尾10ms淡入出；无首尾大交叠。Source describes real HHKB Professional Hybrid Topre typing, recorded with Yeti Nano, no post-production. |
+| 手磨咖啡 | `public/audio/coffee-grinder.mp3` | [Manual Coffee Grinder](https://freesound.org/people/apintofmild/sounds/642772/)，apintofmild | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；35Hz高通、两遍响度调整、保原声道转码与首尾10ms淡入出；无首尾大交叠。Source describes unedited hand-grinding of coffee beans at several speeds. |
+| 木地板慢步 | `public/audio/wooden-walk.mp3` | [01-27 Footsteps, Wood, Barefoot, Slow Pace.wav](https://freesound.org/people/SpliceSound/sounds/369641/)，SpliceSound | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；35Hz高通、两遍响度调整、保原声道转码与首尾10ms淡入出；无首尾大交叠。Source describes walking barefoot on a wood floor at a slow pace. |
+| 旧钟轻摆 | `public/audio/clock-ticks.mp3` | [Old Clock - Loop](https://freesound.org/people/vdr3/sounds/393695/)，vdr3 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；35Hz高通、两遍响度调整、保原声道转码与首尾10ms淡入出；无首尾大交叠。Source describes old mechanical clock recorded with Zoom H4N and explicitly cut into a loop. 作者已编排机械钟循环，应用循环应保留滴答周期，勿再次首尾大交叠。 |
+| 松鼠短鸣 | `public/audio/squirrel-calls.mp3` | [松鼠短鸣](https://commons.wikimedia.org/wiki/File:A_three-striped_palm_squirrel_(Funambulus_palmarum)_chirping_16January2015.oga)，Subhashish Panigrahi | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 原录音全长；转码、35Hz高通、响度调整及头尾10ms淡入出；保留原声道，无大首尾交叠。 |
+| 冠长臂猿 | `public/audio/gibbon-canopy.mp3` | [冠长臂猿](https://commons.wikimedia.org/wiki/File:Hylobates-pileatus-pileated-gibbon-calling-singing-1.oga)，Rushenb | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | 原录音全长；转码、35Hz高通、响度调整及头尾10ms淡入出；保留原声道，无大首尾交叠。 |
+| 座头鲸歌 | `public/audio/humpback-song.mp3` | [座头鲸歌](https://commons.wikimedia.org/wiki/File:Humpback-Whale-Song-on-the-Southern-Ocean-Feeding-Grounds-Implications-for-Cultural-Transmission-pone.0079422.s003.oga)，Garland E, Gedamke J, Rekdahl M, Noad M, Garrigue C, Gales N | [CC BY 2.5](https://creativecommons.org/licenses/by/2.5/) | 新喀里多尼亚2010年座头鲸鸣唱代表句节选（原研究S3），非连续环境录音；转码、25Hz高通、响度调整及头尾10ms淡入出，保留原单声道。 |
+| 雪地慢步 | `public/audio/snow-walk.mp3` | [雪地慢步](https://freesound.org/people/Nimlos/sounds/432285/)，Nimlos | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 使用公开HQ MP3预览全长（未使用需登录的原文件）；转码、35Hz高通、响度调整及头尾10ms淡入出，保留原声道，无大首尾交叠。 |
+
+CC BY-SA 4.0 两条录音的改编音频继续使用相同许可；其它条目按各自链接许可保留。署名、下载源、原始与产物 SHA256、音频参数及处理方式见[本轮来源清单](./audio-sources-v1-5.json)，处理脚本见 `scripts/import_audio_v1_5.py`。
+
+座头鲸歌：Garland EC, Gedamke J, Rekdahl ML, Noad MJ, Garrigue C, Gales N (2013), *Humpback Whale Song on the Southern Ocean Feeding Grounds: Implications for Cultural Transmission*, PLoS ONE 8(11): e79422, [DOI:10.1371/journal.pone.0079422](https://doi.org/10.1371/journal.pone.0079422)，Acoustic File S3。所用音频为新喀里多尼亚 2010 年鲸歌各主题代表乐句拼合节选，按下载的 Commons 文件页标示保留 CC BY 2.5 与署名，不描述为南大洋连续环境录音。
+
+
+## v1.6.0 · 手作、足迹与陪伴
+
+本轮新增8段CC0来源录音，转码并整理响度，保留原声道和动作节律。铅笔书写由完整短录音间隔编排为60秒，非一分钟连续现场；杯中注水同时包含热饮入杯与搅拌，不描述为纯茶声。场景为创意混音，不代表同一时间、地点录得。
+
+| 栖时名称 | 文件 | 原录音与作者 | 授权 | 改动与说明 |
+| --- | --- | --- | --- | --- |
+| 铅笔书写 | `public/audio/pencil-writing.mp3` | [Pencil Writing](https://freesound.org/people/paulocorona/sounds/334985/)，paulocorona | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 铅笔在纸面书写的实录。将公开HQ预览9.848163秒全片分别置于1/21/41秒，余处留静，编排为60秒；不是一分钟连续书写现场。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 钩针轻响 | `public/audio/crochet-hooks.mp3` | [Crochet needles-hooks and fabric.wav](https://freesound.org/people/DrDufus/sounds/514797/)，DrDufus | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 两支钩针/针钩由手操作，并伴随织物移动；公开HQ预览全长保留，不描述成纯毛线织造或机器声。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 对此录音的尖锐瞬态进行动态压缩（阈值见 transientCompression，3:1，起音 0.1ms、释放 80ms），随后执行两遍响度整理。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 软刷拂纸 | `public/audio/soft-paintbrush.mp3` | [Paintbrush Hairbrush - Soft brush](https://freesound.org/people/Vrymaa/sounds/753283/)，Vrymaa | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 用软画刷轻刷纸面的实录；公开HQ预览全长保留，不描述为刷头发。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 杯中注水 | `public/audio/cup-pour.mp3` | [Kitchen - coffee or tea being poured into mug and stirred.wav](https://freesound.org/people/jodybruchon/sounds/433888/)，jodybruchon | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 热饮倒入杯中并搅拌的实录；公开HQ预览全长保留，不指认为某一种茶、咖啡或持续自然流水。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 对此录音的尖锐瞬态进行动态压缩（阈值见 transientCompression，3:1，起音 0.1ms、释放 80ms），随后执行两遍响度整理。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 猫咪呼噜 | `public/audio/cat-purr.mp3` | [Cat Purring (long/clear/loud)](https://freesound.org/people/JamesBradford/sounds/579898/)，JamesBradford | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 作者自家猫Pozzo在膝上呼噜的近距离实录；公开HQ预览全长保留。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 小犬轻鼾 | `public/audio/dog-snore.mp3` | [Small Dog Snoring](https://freesound.org/people/Filmscore/sounds/436940/)，Filmscore | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 一只10岁小型贵宾犬/吉娃娃混种犬睡眠鼾声实录；公开HQ预览全长保留，不作呼吸健康或助眠效果判断。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 砂径脚步 | `public/audio/gravel-walk.mp3` | [Footsteps on gravel.wav](https://freesound.org/people/BeeProductive/sounds/395597/)，BeeProductive | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 在碎石小径慢走的脚步实录；公开HQ预览全长保留，不改变步伐速度。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+| 踏叶慢行 | `public/audio/dry-leaf-walk.mp3` | [Soft walking through very dry leaves and twigs.wav](https://freesound.org/people/Alex_hears_things/sounds/636844/)，Alex_hears_things | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | 踩过干枯落叶与细枝的脚步实录，录于澳大利亚Mount Coot-Tha；公开HQ预览全长保留，不描述成风吹树冠。 转码为44.1kHz、128kbps MP3，35Hz高通、响度整理和头尾10ms淡入出，保留原声道与速度，无大首尾交叠。 对此录音的尖锐瞬态进行动态压缩（阈值见 transientCompression，3:1，起音 0.1ms、释放 80ms），随后执行两遍响度整理。 响度目标 -26 LUFS；编码前真峰目标 -7 dBTP，编码后校验至少 5 dB 余量；实际 LUFS / 真峰值以 quality 字段为准。 |
+
+来源下载地址、源文件与产物SHA256、编码器及实际测量记录见[本轮来源清单](./audio-sources-v1-6.json)，处理脚本为 `scripts/import_audio_v1_6.py`。作者页的公开HQ MP3 preview不等同于需登录下载的原始无损文件。
