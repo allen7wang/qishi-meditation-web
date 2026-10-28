@@ -1,6 +1,6 @@
 const BASE_PATH = new URL('./', self.location.href).pathname
 const CACHE_SUFFIX = BASE_PATH === '/' ? '' : ':' + BASE_PATH
-const CACHE_NAME = 'qishi-v1.6.0' + CACHE_SUFFIX
+const CACHE_NAME = 'qishi-v1.7.0' + CACHE_SUFFIX
 const AUDIO_CACHE = 'qishi-audio-v1' + CACHE_SUFFIX
 function appPath(path) { return BASE_PATH + path.replace(/^\/+/, '') }
 const AUDIO_FILES = [
@@ -116,7 +116,15 @@ const AUDIO_FILES = [
   '/audio/cat-purr.mp3',
   '/audio/dog-snore.mp3',
   '/audio/gravel-walk.mp3',
-  '/audio/dry-leaf-walk.mp3',
+  '/audio/dry-leaf-walk.mp3',  '/audio/rowboat-oars.mp3',
+  '/audio/kayak-paddle.mp3',
+  '/audio/mooring-rope.mp3',
+  '/audio/marina-rigging.mp3',
+  '/audio/sandy-footsteps.mp3',
+  '/audio/shallow-wading.mp3',
+  '/audio/riverboat-bow.mp3',
+  '/audio/sailboat-cabin.mp3',
+
 ].map(appPath)
 
 self.addEventListener('install', (event) => {
@@ -131,7 +139,7 @@ self.addEventListener('install', (event) => {
     const cache = await caches.open(CACHE_NAME)
     await cache.put(appPath('index.html'), response.clone())
     await cache.put(BASE_PATH, response)
-    await cache.addAll(['icon.svg', 'icon-192.png', 'icon-512.png', 'manifest.webmanifest', 'audio-credits.md', 'audio-sources.json', 'audio-sources-v0-7.json', 'audio-sources-v0-8.json', 'audio-sources-v1-5.json', 'audio-sources-v1-6.json'].map(appPath).concat(bundles))
+    await cache.addAll(['icon.svg', 'icon-192.png', 'icon-512.png', 'manifest.webmanifest', 'audio-credits.md', 'audio-sources.json', 'audio-sources-v0-7.json', 'audio-sources-v0-8.json', 'audio-sources-v1-5.json', 'audio-sources-v1-6.json', 'audio-sources-v1-7.json'].map(appPath).concat(bundles))
     await self.skipWaiting()
   })())
 })

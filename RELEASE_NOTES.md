@@ -1,3 +1,21 @@
+# 栖时 QISHI v1.7.0 · 水岸慢旅
+
+2026-10-28，Web / PWA 预发布，159 段声音、19 类、109 场景。
+
+新增小舟慢桨、皮艇轻划、系泊绳响、港湾桅索、沙岸足迹、浅水足音、船首细浪、系泊船舱，以及 12 个可调音的创意场景。原 151 段与 97 个场景保留；收藏、聆听记忆和已有离线音频继续可用。新增素材为 CC0 实录 HQ 预览，源/产物哈希、作者与节选说明齐全。船首含远发动机，沙岸含多种地面，船舱取前 90 秒；均保留实际声道、速度和事件节律。
+
+[在线体验](https://allen7wang.github.io/qishi-meditation-web/) · [声音授权](https://allen7wang.github.io/qishi-meditation-web/audio-credits.md) · [Android / iOS 安装包](https://github.com/allen7wang/qishi-meditation/releases/tag/v1.7.0)（需私有仓库访问权限）
+
+Android 下载 `qishi-v1.7.0-android.apk`，沿用旧模板 debug 证书侧载；iOS 下载 `qishi-v1.7.0-ios-unsigned.ipa`，须自行签名后安装。iOS build 5 / Android versionCode 1700，包名保留 com.allen7wang.qishi；未上架 App Store / TestFlight / Play Store。
+
+190 项 Web Node、32 项原生 Node、完整类型检查、根路径 / Pages 构建及 22 组 Chrome 新内容与布局检查通过。8 段真实解码试听与 12 场景断网重开播放均通过；顺带修正 320 px 分类栏横向溢出。CI 核对四 ABI、版本、159 段音频 SHA256、旧版证书及 unsigned IPA，附两端第三方授权归档、原生验证报告和全套校验和。
+
+未进行本版真机、长时间锁屏或整段主观听感验收。
+
+校验文件：`SHA256SUMS` 对应解压后 `qishi-meditation-web/` 下的运行文件；`SHA256SUMS-web` 对应 ZIP 和发布元数据附件。离线前须主动保存所需声音并等待完成。
+
+---
+
 # 栖时 QISHI Web v1.6.0 · 手作、足迹与陪伴
 
 2026-10-25，Web / PWA 预发布：151 段声音、19 类、97 个场景。

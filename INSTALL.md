@@ -1,6 +1,6 @@
-# QISHI v1.6.0 runtime and downloads
+# QISHI v1.7.0 runtime and downloads
 
-[Online experience](https://allen7wang.github.io/qishi-meditation-web/) | [Web runtime archive](https://github.com/allen7wang/qishi-meditation-web/archive/refs/tags/v1.6.0.zip) | [Mobile downloads](https://github.com/allen7wang/qishi-meditation/releases/tag/v1.6.0)
+[Online experience](https://allen7wang.github.io/qishi-meditation-web/) | [Web runtime archive](https://github.com/allen7wang/qishi-meditation-web/archive/refs/tags/v1.7.0.zip) | [Mobile downloads](https://github.com/allen7wang/qishi-meditation/releases/tag/v1.7.0)
 
 ## Web
 
